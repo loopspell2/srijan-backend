@@ -1,23 +1,26 @@
-const express = require("express");
 const cors = require('cors');
+const express = require("express");
 const cookieParser = require('cookie-parser');
 
 const connection = require('./config/database');
+
 const { authRouter } = require("./routes/auth.routes");
+const { assetRouter } = require("./routes/assets.routes");
 
 connection()
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:5173',
 }));
 
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/assets', assetRouter);
+
 
 module.exports = app;
