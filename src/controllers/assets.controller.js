@@ -42,7 +42,8 @@ const assetCreate = async (req, res) => {
 
 const assetList = async (req, res) => {
 
-    const { type, name } = req.query;
+    const { type } = null || req.query;
+    const { name } = req.query;
     const filter = {};
 
     if (type) {
@@ -66,9 +67,50 @@ const assetList = async (req, res) => {
     }
 }
 
+const assetDelete = async (req, res) => {
+    const id = req.headers.id;
+
+    try {
+        const asset = await Asset.findByIdAndDelete(id);
+        if (!asset) {
+            return res.status(404).send('Asset not found');
+        }
+        return res.status(200).send('Asset deleted');
+    }
+    catch (err) {
+        console.log(err);
+        throw err;
+    }
+
+}
+
+const assetMaintance = async (req, res) => {
+    const id = req.headers.id;
+
+    try {
+        // Update asset and get the updated document
+        const asset = await Asset.findByIdAndUpdate(
+            id,
+            { lastMaintenanceDate: Date.now() },
+            { new: true }
+        );
+
+        // Check if asset was found and updated
+        if (!asset) {
+            return res.status(404).send('Asset not found');
+        }
+
+        return res.status(200).send(asset);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Internal Server Error'); // Added response for error
+    }
+}
 
 
 module.exports = {
     assetCreate,
     assetList,
+    assetDelete,
+    assetMaintance,
 }

@@ -38,7 +38,8 @@ const assetSchema = new mongoose.Schema({
         default: 'In Use'
     },
     lastMaintenanceDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
 });
 
