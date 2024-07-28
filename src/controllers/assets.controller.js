@@ -58,9 +58,7 @@ const assetList = async (req, res) => {
 
     try {
         const assets = await Asset.find(filter);
-        return res.status(200).json({
-            assets,
-        });
+        return res.status(200).json(assets);
     } catch (err) {
         console.log(err);
         throw err;
